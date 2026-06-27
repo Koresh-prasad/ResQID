@@ -17,10 +17,24 @@ import { errorHandler, notFound } from './middleware/errorMiddleware.js';
 const app = express();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const clientDistPath = path.resolve(__dirname, '../../client/dist');
-const allowedOrigins = (process.env.CLIENT_URL || 'http://localhost:5173,http://127.0.0.1:5173')
+const allowedOrigins = (process.env.CLIENT_URL || 'http://localhost:5173,http://127.0.0.1:5173,https://res-qid-client.vercel.app')
   .split(',')
   .map((origin) => origin.trim())
   .filter(Boolean);
+
+const isAllowedOrigin = (origin) => {
+  if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV !== 'production') return true;
+
+  try {
+    const { hostname, protocol } = new URL(origin);
+    return protocol === 'https:' && (
+      hostname === 'res-qid-client.vercel.app' ||
+      hostname.startsWith('res-qid-client-') && hostname.endsWith('.vercel.app')
+    );
+  } catch {
+    return false;
+  }
+};
 
 app.set('trust proxy', 1);
 app.use(helmet({
@@ -29,9 +43,7 @@ app.use(helmet({
 }));
 app.use(cors({
   origin(origin, callback) {
-    if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV !== 'production') {
-      return callback(null, true);
-    }
+    if (isAllowedOrigin(origin)) return callback(null, true);
     return callback(new Error('Not allowed by CORS'));
   },
   credentials: true
