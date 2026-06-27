@@ -1,0 +1,17 @@
+{
+  "name": "resqid",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ResQID - Privacy-protected smart emergency identification system",
+  "scripts": {
+    "dev": "concurrently \"pnpm --dir server dev\" \"pnpm --dir client dev\"",
+    "install:all": "pnpm install && pnpm --dir server install && pnpm --dir client install",
+    "build": "pnpm --filter resqid-client build",
+    "start": "pnpm --filter resqid-server start",
+    "make:qr": "node scripts/make-public-qr.mjs"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "packageManager": "pnpm@11.7.0"
+}
