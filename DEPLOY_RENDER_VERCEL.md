@@ -126,6 +126,18 @@ Vercel gives a frontend URL like:
 https://resqid.vercel.app
 ```
 
+Current ResQID frontend URL:
+
+```text
+https://res-qid-client.vercel.app
+```
+
+Current ResQID backend URL:
+
+```text
+https://resqid-backend.onrender.com
+```
+
 ## 5. Final Render Update
 
 After Vercel gives the final frontend URL, go back to Render and update:
